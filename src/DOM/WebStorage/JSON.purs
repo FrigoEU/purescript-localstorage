@@ -1,13 +1,11 @@
 module DOM.WebStorage.JSON
 ( getItem
 , setItem
-, getItemVar
 ) where
 
 import Prelude
 
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Var (Var)
 import Data.Argonaut.Decode (class DecodeJson, decodeJson)
 import Data.Argonaut.Encode (class EncodeJson, encodeJson)
 import Data.Argonaut.Parser (jsonParser)
@@ -29,12 +27,6 @@ setItem :: forall e key a. (Generic (key a), EncodeJson a)
 setItem storage key = setItem' key <<< stringify
   where
     setItem' = String.setItem storage <<< gShow
-
-getItemVar :: forall e key a. (Generic (key a), EncodeJson a, DecodeJson a)
-  => ForeignStorage -> key a -> a -> Var (storage :: STORAGE | e) a
-getItemVar storage key defaultItem = getItemVar' key stringify (parse defaultItem id) defaultItem
-  where
-    getItemVar' = String.getItemVar' storage <<< gShow
 
 stringify :: forall a. EncodeJson a => a -> String
 stringify = show <<< encodeJson

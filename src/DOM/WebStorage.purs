@@ -3,7 +3,6 @@ module DOM.WebStorage (module Exports) where
 import DOM (DOM) as Exports
 import DOM.WebStorage.Generic
   ( getItem
-  , getItemVar
   , removeItem
   , setItem
   ) as Exports
